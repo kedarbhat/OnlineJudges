@@ -1,19 +1,21 @@
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
-      std::unordered_set<int> nums_seen;
-      auto max_number = 0;
+      auto maxEntry = *std::max_element(nums.cbegin(), nums.cend());
+      if (maxEntry < 1) {
+        return 1;
+      }
+      std::vector<bool> numbersSeen(maxEntry+std::size_t{1});
       for (auto i : nums) {
           if (i > 0) {
-              nums_seen.emplace(i);
-              max_number = std::max(max_number, i);
+              numbersSeen[i] = true;
           }
       }
-      for (auto i = 1; i < max_number; ++i) {
-          if (nums_seen.find(i) == nums_seen.cend()) {
-            return i;
-          }
+      for (auto i = 1; i <= maxEntry; ++i) {
+        if (!numbersSeen[i]) {
+          return i;
+        }
       }
-      return max_number+1;
+      return maxEntry+1;
     }
 };
