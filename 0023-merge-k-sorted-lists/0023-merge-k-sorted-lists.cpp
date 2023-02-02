@@ -10,30 +10,52 @@
  */
 
 class Solution {
-    inline static constexpr auto compare = [](ListNode* lhs, ListNode* rhs) noexcept {
-        return lhs->val > rhs->val;
-    };
-public:
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        std::priority_queue<ListNode*, std::vector<ListNode*>, decltype(compare)> heap(compare);
-        for (auto* listNode : lists) {
-            while (listNode != nullptr) {
-                heap.push(listNode);
-                listNode = listNode->next;
-            }
-        }
-        if (heap.empty()) {
+    static constexpr auto compare(ListNode* lhs, ListNode* rhs) noexcept {
+        return lhs->val < rhs->val;
+    }
+
+    ListNode* mergeTwoLists(ListNode* lhs, ListNode* rhs) const noexcept {
+        if (lhs == nullptr && rhs == nullptr) {
             return nullptr;
         }
-        ListNode* result = heap.top();
-        heap.pop();
-        ListNode* dummy = result;
-        while (!heap.empty()) {
-            dummy->next = heap.top();
-            heap.pop();
+        if (lhs == nullptr || rhs == nullptr) {
+            return lhs == nullptr ? rhs : lhs;
+        }
+
+        ListNode result{0};
+        auto* dummy = std::addressof(result);
+
+        while (lhs != nullptr && rhs != nullptr) {
+            dummy->next = compare(lhs, rhs) ? lhs : rhs;
+            if (compare(lhs, rhs)) {
+                lhs = lhs->next;
+            } else {
+                rhs = rhs->next;
+            }
             dummy = dummy->next;
         }
-        dummy->next = nullptr;
-        return result;
+
+        if (lhs != nullptr) {
+            dummy->next = lhs;
+        } else if (rhs != nullptr) {
+            dummy->next = rhs;
+        }
+        return result.next;
+    }
+
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) {
+            return nullptr;
+        }
+        const auto numLists = lists.size();
+        auto stepSize = 1;
+        while (stepSize < numLists) {
+            for (auto i{0}; i+stepSize < numLists; i += 2*stepSize) {
+                lists[i] = mergeTwoLists(lists[i], lists[i + stepSize]);
+            }
+            stepSize *= 2;
+        }
+        return lists.front();
     }
 };
