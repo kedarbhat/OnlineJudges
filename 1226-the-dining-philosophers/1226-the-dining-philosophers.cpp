@@ -1,35 +1,43 @@
 class DiningPhilosophers {
    static constexpr auto NUM_PHILOSOPHERS{4};
    static constexpr auto NUM_FORKS{NUM_PHILOSOPHERS+1};
-   std::array<std::mutex, NUM_FORKS> theForkMutexes;
-public:
-    DiningPhilosophers() {
-    }
+   std::bitset<5> theForkIsAvailable{31};
+   std::mutex theForksMutex;
+   std::condition_variable theCv;
+   
+   static constexpr auto getLeftForkIdx(int philosopher) noexcept {
+       return philosopher % NUM_FORKS;
+   }
 
+   static constexpr auto getRightForkIdx(int philosopher) noexcept {
+       return (philosopher+1) % NUM_FORKS;
+   }
+
+public:
     void wantsToEat(int philosopher,
                     function<void()> pickLeftFork,
                     function<void()> pickRightFork,
                     function<void()> eat,
                     function<void()> putLeftFork,
                     function<void()> putRightFork) {
-        auto philosopherEats = [=]() {
+        const auto myLeftForkIdx = getLeftForkIdx(philosopher);
+        const auto myRightForkIdx = getRightForkIdx(philosopher);
+        {
+            std::unique_lock myWaitingLock{theForksMutex};
+            theCv.wait(myWaitingLock, [&]() { return theForkIsAvailable[myLeftForkIdx] && theForkIsAvailable[myRightForkIdx]; });
+            theForkIsAvailable[myLeftForkIdx] = false;
+            theForkIsAvailable[myRightForkIdx] = false;
             pickLeftFork();
             pickRightFork();
-            eat();
-            putLeftFork();
-            putRightFork();
-        };
-
-        auto& myLeftFork = theForkMutexes[philosopher % theForkMutexes.size()];
-        auto& myRightFork = theForkMutexes[(philosopher+1) % theForkMutexes.size()];
-        if (philosopher % 2 == 1) {
-            std::lock_guard myLeftLock{myLeftFork};
-            std::lock_guard myRightLock{myRightFork};
-            philosopherEats();
-        } else {
-            std::lock_guard myRightLock{myRightFork};
-            std::lock_guard myLeftLock{myLeftFork};
-            philosopherEats();
         }
+
+        eat();
+
+        std::lock_guard myDoneEatingLock{theForksMutex};
+        putLeftFork();
+        putRightFork();
+        theForkIsAvailable[myLeftForkIdx] = true;
+        theForkIsAvailable[myRightForkIdx] = true;
+        theCv.notify_all();
     }
 };
