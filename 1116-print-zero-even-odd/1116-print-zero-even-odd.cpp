@@ -14,7 +14,7 @@ public:
     // printNumber(x) outputs "x", where x is an integer.
     void zero(function<void(int)> printNumber) {
         while (theCounter <= theN) {
-            if (!thePrintZero.test_and_set(std::memory_order_acq_rel)) {
+            if (!thePrintZero.test_and_set(std::memory_order_consume)) {
                 if (theCounter < theN) {
                     printNumber(0);
                 }
@@ -32,7 +32,7 @@ public:
 
     void even(function<void(int)> printNumber) {
         while (theCounter <= theN) {
-            if (theCounter % 2 == 0 && !thePrintEven.test_and_set(std::memory_order_acq_rel)) {
+            if (theCounter % 2 == 0 && !thePrintEven.test_and_set(std::memory_order_consume)) {
                 printNumber(theCounter);
                 thePrintZero.clear(std::memory_order_release);
             } else {
@@ -43,7 +43,7 @@ public:
 
     void odd(function<void(int)> printNumber) {
         while (theCounter <= theN) {
-            if (theCounter % 2 == 1 && !thePrintOdd.test_and_set(std::memory_order_acq_rel)) {
+            if (theCounter % 2 == 1 && !thePrintOdd.test_and_set(std::memory_order_consume)) {
                 printNumber(theCounter);
                 thePrintZero.clear(std::memory_order_release);
             } else {
