@@ -5,14 +5,14 @@ private:
    const int theN;
 public:
     FooBar(int n) : theN{n} {
-        theFooFlag.clear(std::memory_order_release);
-        theBarFlag.test_and_set(std::memory_order_acq_rel);
+        theFooFlag.clear();
+        theBarFlag.test_and_set();
     }
 
     void foo(function<void()> printFoo) {
-        for (int i = 0; i < theN; i++) {            
+        for (int i = 0; i < theN; ++i) {            
         	// printFoo() outputs "foo". Do not change or remove this line.
-            while (theFooFlag.test_and_set(std::memory_order_acq_rel)) {
+            while (theFooFlag.test_and_set(std::memory_order_relaxed)) {
                 std::this_thread::yield();
             }
         	printFoo();
@@ -21,9 +21,9 @@ public:
     }
 
     void bar(function<void()> printBar) {
-        for (int i = 0; i < theN; i++) {
+        for (int i = 0; i < theN; ++i) {
         	// printBar() outputs "bar". Do not change or remove this line.
-            while (theBarFlag.test_and_set(std::memory_order_acq_rel)) {
+            while (theBarFlag.test_and_set(std::memory_order_relaxed)) {
                 std::this_thread::yield();
             }
         	printBar();
