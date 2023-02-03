@@ -1,33 +1,33 @@
 class FooBar {
 private:
-    std::mutex theMutex;
-    std::condition_variable theCv;
-    const int theN;
-    bool theFooPrintable;
-
+   std::atomic_flag theFooFlag = ATOMIC_FLAG_INIT;
+   std::atomic_flag theBarFlag = ATOMIC_FLAG_INIT;
+   const int theN;
 public:
-    FooBar(int n) : theN{n}, theFooPrintable{true} {
+    FooBar(int n) : theN{n} {
+        theFooFlag.clear(std::memory_order_release);
+        theBarFlag.test_and_set(std::memory_order_acq_rel);
     }
 
     void foo(function<void()> printFoo) {
         for (int i = 0; i < theN; i++) {            
         	// printFoo() outputs "foo". Do not change or remove this line.
-            std::unique_lock myLock {theMutex};
-            theCv.wait(myLock, [&canProceed = theFooPrintable]() { return canProceed; });
+            while (theFooFlag.test_and_set(std::memory_order_acq_rel)) {
+                std::this_thread::yield();
+            }
         	printFoo();
-            theFooPrintable = false;
-            theCv.notify_one();
+            theBarFlag.clear();
         }
     }
 
     void bar(function<void()> printBar) {
         for (int i = 0; i < theN; i++) {
         	// printBar() outputs "bar". Do not change or remove this line.
-            std::unique_lock myLock {theMutex};
-            theCv.wait(myLock, [&cannotProceed = theFooPrintable]() { return !cannotProceed; });
+            while (theBarFlag.test_and_set(std::memory_order_acq_rel)) {
+                std::this_thread::yield();
+            }
         	printBar();
-            theFooPrintable = true;
-            theCv.notify_one();
+            theFooFlag.clear();
         }
     }
 };
