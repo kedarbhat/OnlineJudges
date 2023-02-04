@@ -1,7 +1,7 @@
 class ZeroEvenOdd {
 private:
-using FlagArrayT = std::array<std::atomic_flag, 3>;
-    static constexpr auto ZERO_FLAG_IDX = std::tuple_size_v<FlagArrayT>-1;
+    using FlagArrayT = std::bitset<3>;
+    static constexpr auto ZERO_FLAG_IDX = std::size(FlagArrayT{})-1;
     FlagArrayT theFlags;
     bool terminateLoop{false};
     int theCounter{0};
@@ -14,31 +14,30 @@ using FlagArrayT = std::array<std::atomic_flag, 3>;
 public:
     ZeroEvenOdd(int n) : theN{n} 
     {
-        for (auto&& myAtomicFlag : theFlags) {
-            myAtomicFlag.test_and_set();
-        }
-        theFlags[ZERO_FLAG_IDX].clear();
+        theFlags[ZERO_FLAG_IDX] = true;
     }
 
     // printNumber(x) outputs "x", where x is an integer.
     void zero(function<void(int)> printNumber) {
         while (!terminateLoop) {
-            if (!theFlags[ZERO_FLAG_IDX].test_and_set(std::memory_order_acquire)) {
+            if (theFlags[ZERO_FLAG_IDX]) {
                 printNumber(0);
                 ++theCounter;
-                theFlags[parityBit(theCounter)].clear(std::memory_order_release);
+                theFlags[ZERO_FLAG_IDX] = false;
+                theFlags[parityBit(theCounter)] = true;
             } else {
                 std::this_thread::yield();
             }
-        }
+        } 
     }
 
     void even(function<void(int)> printNumber) {
         while (!terminateLoop) {
-            if (parityBit(theCounter) == 0 && !theFlags[parityBit(theCounter)].test_and_set(std::memory_order_acquire)) {
+            if (auto myParityBit = parityBit(theCounter); myParityBit == 0 && theFlags[myParityBit]) {
                 printNumber(theCounter);
                 terminateLoop = theCounter >= theN;
-                theFlags[ZERO_FLAG_IDX].clear(std::memory_order_release);
+                theFlags[myParityBit] = false;
+                theFlags[ZERO_FLAG_IDX] = true;
             } else {
                 std::this_thread::yield();
             }
@@ -47,10 +46,11 @@ public:
 
     void odd(function<void(int)> printNumber) {
         while (!terminateLoop) {
-            if (parityBit(theCounter) == 1 && !theFlags[parityBit(theCounter)].test_and_set(std::memory_order_acquire)) {
+            if (auto myParityBit = parityBit(theCounter); myParityBit == 1 && theFlags[myParityBit]) {
                 printNumber(theCounter);
                 terminateLoop = theCounter >= theN;
-                theFlags[ZERO_FLAG_IDX].clear(std::memory_order_release);
+                theFlags[parityBit(theCounter)] = false;
+                theFlags[ZERO_FLAG_IDX] = true;
             } else {
                 std::this_thread::yield();
             }
