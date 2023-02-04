@@ -15,7 +15,7 @@ public:
         // printSecond() outputs "second". Do not change or remove this line.
         {
             std::unique_lock myLock{theMutex};
-            theCv.wait(myLock, [&theCounter = theCounter]() { return theCounter.load(std::memory_order_acquire) == 2; });
+            theCv.wait(myLock, [&]() { return theCounter.load(std::memory_order_acquire) == 2; });
         }
         printSecond();
         theCounter.store(3, std::memory_order_release);
@@ -26,7 +26,7 @@ public:
         // printThird() outputs "third". Do not change or remove this line.
         {
             std::unique_lock myLock{theMutex};
-            theCv.wait(myLock, [&theCounter = theCounter]() { return theCounter.load(std::memory_order_acquire) == 3; });
+            theCv.wait(myLock, [&]() { return theCounter.load(std::memory_order_acquire) == 3; });
         }
         printThird();
     }
