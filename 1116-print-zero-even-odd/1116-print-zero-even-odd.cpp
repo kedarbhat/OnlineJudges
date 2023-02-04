@@ -1,33 +1,32 @@
 class ZeroEvenOdd {
 private:
-    std::atomic_flag thePrintZero = ATOMIC_FLAG_INIT;
-    std::atomic_flag thePrintEven = ATOMIC_FLAG_INIT;
-    std::atomic_flag thePrintOdd = ATOMIC_FLAG_INIT;
+using FlagArrayT = std::array<std::atomic_flag, 3>;
+    static constexpr auto ZERO_FLAG_IDX = std::tuple_size_v<FlagArrayT>-1;
+    FlagArrayT theFlags;
+    bool terminateLoop{false};
     int theCounter{0};
     const int theN;
 
-static constexpr bool isOdd(int x) noexcept {
-    return x & 1 == 1;
-}
+    static constexpr auto parityBit(int x) noexcept {
+        return x & 1;
+    }
 
 public:
     ZeroEvenOdd(int n) : theN{n} 
     {
+        for (auto&& myAtomicFlag : theFlags) {
+            myAtomicFlag.test_and_set();
+        }
+        theFlags[ZERO_FLAG_IDX].clear();
     }
 
     // printNumber(x) outputs "x", where x is an integer.
     void zero(function<void(int)> printNumber) {
-        while (theCounter <= theN) {
-            if (!thePrintZero.test_and_set(std::memory_order_acquire)) {
-                if (theCounter < theN) {
-                    printNumber(0);
-                }
+        while (!terminateLoop) {
+            if (!theFlags[ZERO_FLAG_IDX].test_and_set(std::memory_order_acquire)) {
+                printNumber(0);
                 ++theCounter;
-                if (isOdd(theCounter)) {
-                    thePrintOdd.clear(std::memory_order_release);
-                } else {
-                    thePrintEven.clear(std::memory_order_release);
-                }
+                theFlags[parityBit(theCounter)].clear(std::memory_order_release);
             } else {
                 std::this_thread::yield();
             }
@@ -35,10 +34,11 @@ public:
     }
 
     void even(function<void(int)> printNumber) {
-        while (theCounter <= theN) {
-            if (!isOdd(theCounter) && !thePrintEven.test_and_set(std::memory_order_acquire)) {
+        while (!terminateLoop) {
+            if (parityBit(theCounter) == 0 && !theFlags[parityBit(theCounter)].test_and_set(std::memory_order_acquire)) {
                 printNumber(theCounter);
-                thePrintZero.clear(std::memory_order_release);
+                terminateLoop = theCounter >= theN;
+                theFlags[ZERO_FLAG_IDX].clear(std::memory_order_release);
             } else {
                 std::this_thread::yield();
             }
@@ -46,10 +46,11 @@ public:
     }
 
     void odd(function<void(int)> printNumber) {
-        while (theCounter <= theN) {
-            if (isOdd(theCounter) && !thePrintOdd.test_and_set(std::memory_order_acquire)) {
+        while (!terminateLoop) {
+            if (parityBit(theCounter) == 1 && !theFlags[parityBit(theCounter)].test_and_set(std::memory_order_acquire)) {
                 printNumber(theCounter);
-                thePrintZero.clear(std::memory_order_release);
+                terminateLoop = theCounter >= theN;
+                theFlags[ZERO_FLAG_IDX].clear(std::memory_order_release);
             } else {
                 std::this_thread::yield();
             }
