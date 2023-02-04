@@ -1,7 +1,7 @@
 class Foo {
    std::mutex theMutex;
    std::condition_variable theCv;
-   std::atomic_int theCounter{1};
+   std::atomic_int theCounter{};
 
 public:
     void first(function<void()> printFirst) {
