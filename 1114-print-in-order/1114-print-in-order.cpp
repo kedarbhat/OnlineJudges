@@ -1,30 +1,29 @@
 class Foo {
-   std::mutex theMutex;
-   std::condition_variable theCv;
-   int theCounter{1};
+    std::atomic_flag printSecondFlag = ATOMIC_FLAG_INIT;
+    std::atomic_flag printThirdFlag = ATOMIC_FLAG_INIT;
 
 public:
+    Foo() {
+        printSecondFlag.test_and_set();
+        printThirdFlag.test_and_set();
+    }
     void first(function<void()> printFirst) {
         // printFirst() outputs "first". Do not change or remove this line.
         printFirst();
-        theCounter = 2;
-        theCv.notify_all();
+        printSecondFlag.clear();
+
     }
 
     void second(function<void()> printSecond) {
         // printSecond() outputs "second". Do not change or remove this line.
-        std::unique_lock myLock{theMutex};
-        theCv.wait(myLock, [&theCounter = theCounter]() { return theCounter == 2; });
+        while (printSecondFlag.test_and_set()) {}
         printSecond();
-        theCounter = 3;
-        theCv.notify_all();
+        printThirdFlag.clear();
     }
 
     void third(function<void()> printThird) {
         // printThird() outputs "third". Do not change or remove this line.
-        std::unique_lock myLock{theMutex};
-        theCv.wait(myLock, [&theCounter = theCounter]() { return theCounter == 3; });
+        while (printThirdFlag.test_and_set()) {}
         printThird();
-        theCounter = 1;
     }
 };
