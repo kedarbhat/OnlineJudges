@@ -1,34 +1,31 @@
 class RandomizedCollection {
     std::random_device theRandomDevice;
-    std::unordered_map<int, std::unordered_set<std::size_t>> theMap;
+    std::unordered_map<int, std::unordered_set<int>> theMap;
     std::vector<int> theData;
 public:
-    bool insert(int val) {
+    bool insert(int val) noexcept {
         theData.emplace_back(val);
         theMap[val].emplace(theData.size()-1);
         return theMap[val].size() == 1;
     }
 
-    bool remove(int val) {
-        if (theMap[val].empty()) {
+    bool remove(int val) noexcept {
+        if (theMap.find(val) == theMap.cend() || theMap[val].empty()) {
             return false;
         } 
         auto prevLastElement = theData.back();
-        auto removeIter = std::max_element(theMap[val].cbegin(), theMap[val].cend());
-        auto removeIdx = *removeIter;
-        theMap[val].erase(removeIter);
+        auto removeIdx = *theMap[val].cbegin();
+        theMap[val].erase(theMap[val].cbegin());
+        theMap[prevLastElement].emplace(removeIdx);
+        theMap[prevLastElement].erase(theData.size()-1);
         theData[removeIdx] = prevLastElement;
         theData.pop_back();
-        theMap[prevLastElement].emplace(removeIdx);
-        theMap[prevLastElement].erase(theData.size());
         return true;
     }
     
-    int getRandom() {
-        assert(!theData.empty());
-        std::uniform_int_distribution<std::size_t> dist(0, theData.size()-1);
-        const auto idx = dist(theRandomDevice);
-        return theData[idx];
+    int getRandom() noexcept {
+        std::uniform_int_distribution<std::size_t> myDist{0, theData.size()-1};
+        return theData[myDist(theRandomDevice)];
     }
 };
 
