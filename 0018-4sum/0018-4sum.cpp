@@ -1,11 +1,13 @@
 class Solution {
-    vector<vector<int>> sortedTwoSum(const vector<int>& nums, int leftAnchor, int rightAnchor, int target) {
+    vector<vector<int>> sortedTwoSum(const vector<int>& nums, const int leftAnchor, const int rightAnchor, const int target) noexcept {
         int start = leftAnchor+1;
         int finish = rightAnchor-1;
+        const std::int64_t anchorSum = nums[leftAnchor] + nums[rightAnchor];
         vector<vector<int>> result;
         while (start < finish) {
-            std::array<std::int64_t, 4> candidates {nums[leftAnchor], nums[start], nums[finish], nums[rightAnchor]};
-            const auto currentSum = std::reduce(candidates.cbegin(), candidates.cend(), std::int64_t{0}, std::plus<>{});
+            auto currentSum = anchorSum;
+            currentSum += nums[start];
+            currentSum += nums[finish];
             if (currentSum == target) {
                 result.emplace_back(vector<int>{nums[leftAnchor], nums[start], nums[finish], nums[rightAnchor]});
                 ++start;
@@ -24,7 +26,7 @@ class Solution {
         return result;
     }
 public:
-    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+    vector<vector<int>> fourSum(vector<int>& nums, const int target) {
         vector<vector<int>> result;
         if (nums.size() < 4) {
             return result;
