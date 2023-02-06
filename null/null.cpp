@@ -1,15 +1,14 @@
 class RandomizedCollection {
-    std::random_device theRandomDevice;
     std::unordered_map<int, std::unordered_set<int>> theMap;
     std::vector<int> theData;
 public:
-    bool insert(int val) noexcept {
+    bool insert(const int val) noexcept {
         theData.emplace_back(val);
         theMap[val].emplace(theData.size()-1);
         return theMap[val].size() == 1;
     }
 
-    bool remove(int val) noexcept {
+    bool remove(const int val) noexcept {
         if (theMap.find(val) == theMap.cend() || theMap[val].empty()) {
             return false;
         } 
@@ -24,8 +23,7 @@ public:
     }
     
     int getRandom() noexcept {
-        std::uniform_int_distribution<std::size_t> myDist{0, theData.size()-1};
-        return theData[myDist(theRandomDevice)];
+        return theData[std::rand() % theData.size()];
     }
 };
 
