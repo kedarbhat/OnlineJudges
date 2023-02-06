@@ -1,5 +1,5 @@
 class Solution {
-    std::vector<int> thePrefixSums;
+    const std::vector<int> thePrefixSums;
     std::uniform_int_distribution<int> theDist;
     std::random_device theRandomDevice;
 
