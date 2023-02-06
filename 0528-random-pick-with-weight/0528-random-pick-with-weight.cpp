@@ -1,6 +1,7 @@
 class Solution {
-    std::random_device theRandomDevice;
     std::vector<int> thePrefixSums;
+    std::uniform_int_distribution<int> theDist;
+    std::random_device theRandomDevice;
 
 static std::vector<int> calcPrefixSums(const std::vector<int>& w) noexcept {
     std::vector<int> myPrefixSums;
@@ -9,7 +10,7 @@ static std::vector<int> calcPrefixSums(const std::vector<int>& w) noexcept {
     return myPrefixSums;
 }
 
-int findIndex(const double target) const noexcept {
+int findIndex(const int target) const noexcept {
     int left = 0;
     int right = thePrefixSums.size();
     while (left < right) {
@@ -24,13 +25,12 @@ int findIndex(const double target) const noexcept {
 }
 
 public:
-    Solution(const vector<int>& w) noexcept : thePrefixSums{calcPrefixSums(w)}
+    Solution(const vector<int>& w) noexcept : thePrefixSums{calcPrefixSums(w)}, theDist{1, thePrefixSums.back()}
     {    
     }
     
     int pickIndex() noexcept {
-        std::uniform_real_distribution<double> myDist;
-        const auto target = myDist(theRandomDevice) * thePrefixSums.back();
+        const auto target = theDist(theRandomDevice);
         return findIndex(target);
     }
 };
