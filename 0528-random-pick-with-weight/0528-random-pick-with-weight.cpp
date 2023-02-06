@@ -1,13 +1,32 @@
 class Solution {
-    std::default_random_engine theEngine;
-    std::discrete_distribution<int> theDistribution;
+    std::random_device theRandomDevice;
+    std::uniform_real_distribution<double> theDistribution;
+    std::vector<int> thePrefixSums;
+
+static std::vector<int> calculatePrefixSums(const std::vector<int>& w) noexcept {
+    std::vector<int> myPrefixSums;
+    myPrefixSums.reserve(w.size());
+    std::partial_sum(w.cbegin(), w.cend(), std::back_inserter(myPrefixSums));
+    return myPrefixSums;
+}
 public:
-    Solution(vector<int>& w) : theDistribution(w.cbegin(), w.cend())
-    {
+    Solution(const vector<int>& w) : thePrefixSums{calculatePrefixSums(w)}
+    {    
     }
     
     int pickIndex() {
-        return theDistribution(theEngine);
+        const auto target = theDistribution(theRandomDevice) * thePrefixSums.back();
+        int left = 0;
+        int right = thePrefixSums.size();
+        while (left < right) {
+            auto mid = left+(right-left)/2;
+            if (thePrefixSums[mid] < target) {
+                left = mid+1;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
     }
 };
 
