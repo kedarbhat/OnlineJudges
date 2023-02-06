@@ -29,8 +29,9 @@ public:
     }
     
     int pickIndex() noexcept {
+        std::mt19937 myEngine{theRandomDevice()};
         std::uniform_real_distribution<double> myDist;
-        const auto target = myDist(theRandomDevice) * thePrefixSums.back();
+        const auto target = myDist(myEngine) * thePrefixSums.back();
         return findIndex(target);
     }
 };
