@@ -1,19 +1,20 @@
 class Solution {
-    using RepeatedLetterGroupsT = std::array<std::string, 26u>;
-    RepeatedLetterGroupsT createRepeatedLetterGroups(std::string_view str) const noexcept {
-        std::array<std::string, 26u> myRepeatedLetterGroups{};
+    using RepeatedLetterCountsT = std::array<int, 26u>;
+    static constexpr RepeatedLetterCountsT createRepeatedLetterCounts(std::string_view str) noexcept {
+        RepeatedLetterCountsT myRepeatedLetterCounts{};
         for (auto c : str) {
             auto idx = c - 'a';
-            myRepeatedLetterGroups[idx].push_back(c);
+            ++myRepeatedLetterCounts[idx];
         }
-        return myRepeatedLetterGroups;
+        return myRepeatedLetterCounts;
     }
 
-    std::string createGroupedAnagram(std::string_view str) const noexcept {        
+    std::string createGroupedAnagram(std::string_view str) const noexcept {                
         std::string myGroupedAnagram;
         myGroupedAnagram.reserve(str.size());
-        for (const auto& repeatedLetterStr : createRepeatedLetterGroups(str)) {
-            myGroupedAnagram += repeatedLetterStr;
+        const auto& myRepeatedLetterCounts{createRepeatedLetterCounts(str)};
+        for (auto charIdx = 0u; charIdx < myRepeatedLetterCounts.size(); ++charIdx) {
+            myGroupedAnagram.append(myRepeatedLetterCounts[charIdx], charIdx+'a');            
         }
         return myGroupedAnagram;
     }
@@ -25,9 +26,9 @@ public:
             myGroupedAnagrams[createGroupedAnagram(str)].push_back(str);
         }
         std::vector<std::vector<std::string>> myResult;
-        for (const auto& [myGroupedAnagram, originalStringsVec] : myGroupedAnagrams) {
-            myResult.emplace_back(originalStringsVec);
-        }
+        std::transform(myGroupedAnagrams.cbegin(), myGroupedAnagrams.cend(), std::back_inserter(myResult), [](const auto& p) {
+            return p.second;
+        });       
         return myResult;
     }
 };
