@@ -1,5 +1,5 @@
 class Solution {
-    mutable std::random_device theRandomDevice;
+    std::random_device theRandomDevice;
     std::vector<int> thePrefixSums;
 
 static std::vector<int> calcPrefixSums(const std::vector<int>& w) noexcept {
@@ -29,9 +29,8 @@ public:
     }
     
     int pickIndex() noexcept {
-        std::mt19937 myEngine{theRandomDevice()};
         std::uniform_real_distribution<double> myDist;
-        const auto target = myDist(myEngine) * thePrefixSums.back();
+        const auto target = myDist(theRandomDevice) * thePrefixSums.back();
         return findIndex(target);
     }
 };
