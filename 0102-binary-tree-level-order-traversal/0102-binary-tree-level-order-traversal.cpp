@@ -18,11 +18,11 @@ public:
         std::deque<TreeNode*> myQueue{root};
         std::vector<vector<int>> result;
         while (!myQueue.empty()) {
-            auto levelLength = myQueue.size();
+            const auto levelLength = myQueue.size();
             std::vector<int> levelResult;
             levelResult.reserve(levelLength);
             for (auto i = 0; i < levelLength; ++i) {
-                auto* myNode = myQueue.front();
+                const auto* myNode = myQueue.front();
                 myQueue.pop_front();
                 levelResult.push_back(myNode->val);
                 if (myNode->left != nullptr) {
