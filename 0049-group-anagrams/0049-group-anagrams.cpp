@@ -1,29 +1,32 @@
 class Solution {
-    static std::pmr::string sortString(std::string_view str) noexcept {
-        std::array<int, 26u> myCounter{};
+    using RepeatedLetterGroupsT = std::array<std::string, 26u>;
+    RepeatedLetterGroupsT createRepeatedLetterGroups(std::string_view str) const noexcept {
+        std::array<std::string, 26u> myRepeatedLetterGroups{};
         for (auto c : str) {
             auto idx = c - 'a';
-            ++myCounter[idx];
+            myRepeatedLetterGroups[idx].push_back(c);
         }
-        std::pmr::string myResult;
-        for (auto c = 0; c < myCounter.size(); ++c) {
-            if (myCounter[c] > 0) {
-                for (auto j = 0; j < myCounter[c]; ++j) {
-                    myResult += c+'a';
-                }
-            }
-        }
-        return myResult;
+        return myRepeatedLetterGroups;
     }
+
+    std::string createGroupedAnagram(std::string_view str) const noexcept {        
+        std::string myGroupedAnagram;
+        myGroupedAnagram.reserve(str.size());
+        for (const auto& repeatedLetterStr : createRepeatedLetterGroups(str)) {
+            myGroupedAnagram += repeatedLetterStr;
+        }
+        return myGroupedAnagram;
+    }
+
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        std::unordered_map<std::pmr::string, std::vector<std::string>> myGroupedAnagrams;
+        std::unordered_map<std::string, std::vector<std::string>> myGroupedAnagrams;
         for (const auto& str : strs) {
-            myGroupedAnagrams[sortString(str)].push_back(str);
+            myGroupedAnagrams[createGroupedAnagram(str)].push_back(str);
         }
         std::vector<std::vector<std::string>> myResult;
-        for (const auto& p : myGroupedAnagrams) {
-            myResult.emplace_back(p.second);
+        for (const auto& [myGroupedAnagram, originalStringsVec] : myGroupedAnagrams) {
+            myResult.emplace_back(originalStringsVec);
         }
         return myResult;
     }
