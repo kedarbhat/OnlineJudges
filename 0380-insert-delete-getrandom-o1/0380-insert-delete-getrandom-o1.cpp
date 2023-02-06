@@ -1,12 +1,12 @@
 class RandomizedSet {
-    mutable std::default_random_engine theEngine;
+    std::random_device theRandomDevice;
     std::vector<int> theData;
     std::unordered_map<int, std::size_t> theMap;
 
 public:
     RandomizedSet() = default;
     
-    bool insert(int val) {
+    bool insert(int val) noexcept {
         if (theMap.find(val) == std::cend(theMap)) {
             theData.emplace_back(val);
             theMap.emplace(val, theData.size()-1);
@@ -15,7 +15,7 @@ public:
         return false;
     }
      
-    bool remove(int val) {
+    bool remove(int val) noexcept {
         if (auto iter = theMap.find(val); iter != theMap.cend()) {
             auto prevLastElement = theData.back();
             theMap[prevLastElement] = theMap[val];
@@ -27,9 +27,9 @@ public:
         return false;
     }
     
-    int getRandom() const {
+    int getRandom() noexcept {
         std::uniform_int_distribution<std::size_t> dist{0, theData.size()-1};
-        auto idx = dist(theEngine);
+        auto idx = dist(theRandomDevice);
         return theData[idx];
     }
 };
