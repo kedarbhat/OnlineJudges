@@ -4,7 +4,8 @@ class Solution {
         int finish = rightAnchor-1;
         vector<vector<int>> result;
         while (start < finish) {
-            std::int64_t currentSum = std::int64_t{nums[leftAnchor]} + std::int64_t{nums[start]} + std::int64_t{nums[finish]} + std::int64_t{nums[rightAnchor]};
+            std::array<std::int64_t, 4> candidates {nums[leftAnchor], nums[start], nums[finish], nums[rightAnchor]};
+            const auto currentSum = std::reduce(candidates.cbegin(), candidates.cend(), std::int64_t{0}, std::plus<>{});
             if (currentSum == target) {
                 result.emplace_back(vector<int>{nums[leftAnchor], nums[start], nums[finish], nums[rightAnchor]});
                 ++start;
