@@ -1,9 +1,9 @@
 class Solution {
     vector<vector<int>> theResult;
     std::unordered_map<int, int> theCounter;
-    void dfs(const vector<int>& nums, std::size_t startIdx, vector<int>& path) noexcept {
+    void dfs(const vector<int>& nums, std::size_t startIdx, std::string path) noexcept {
         if (startIdx == nums.size()) {
-            theResult.emplace_back(vector<int>(path));
+            theResult.emplace_back(vector<int>(path.cbegin(), path.cend()));
             return;
         }
         for (auto& [myNum, myCount] : theCounter) {
@@ -11,7 +11,7 @@ class Solution {
                 continue;
             }
             --myCount;
-            path.push_back(myNum);
+            path += myNum;
             dfs(nums, startIdx+1, path);
             path.pop_back();
             ++myCount;
@@ -22,7 +22,7 @@ public:
         for (auto num : nums) {
             ++theCounter[num];
         }
-        auto path = vector<int>{};
+        auto path = std::string{};
         dfs(nums, 0, path);
         return theResult;
     }
