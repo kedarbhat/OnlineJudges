@@ -1,29 +1,33 @@
-
-static auto pointDistance = [](const vector<int>& point) noexcept { 
-    return point[0]*point[0] + point[1]*point[1]; 
-};
-
-template<>
-struct std::less<vector<int>> {
-    bool operator()(const vector<int>& lhs, const vector<int>& rhs) const noexcept {
-        return pointDistance(lhs) < pointDistance(rhs);
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
     }
 };
+*/
+
 class Solution {
+    std::unordered_map<Node*, Node*> visitedNodes;
 public:
-    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        priority_queue<vector<int>> pq(points.cbegin(), next(points.cbegin(), k));
-        for (auto i = k; i < points.size(); ++i) {
-            if (pointDistance(points[i]) < pointDistance(pq.top())) {
-                pq.pop();
-                pq.push(points[i]);
-            } 
+    Node* copyRandomList(Node* head) {
+        if (head == nullptr) {
+            return head;
         }
-        vector<vector<int>> result;
-        while (!pq.empty()) {
-            result.push_back(pq.top());        
-            pq.pop();
+        if (visitedNodes[head] != nullptr) {
+            return visitedNodes[head];
         }
-        return result;
+        auto* newNode = new Node(head->val);
+        visitedNodes[head] = newNode;
+        newNode->next = copyRandomList(head->next);
+        newNode->random = copyRandomList(head->random);
+        return newNode;
     }
 };
