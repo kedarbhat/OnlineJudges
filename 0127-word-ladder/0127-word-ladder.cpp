@@ -22,9 +22,7 @@ public:
         auto seenWords = WordSetT{beginWord};
         auto transitionMap = createTransitionMap(wordList);
         while (!myQueue.empty()) {
-            const auto& queuedPair = myQueue.front();
-            const auto& word = queuedPair.first;
-            const auto level = queuedPair.second;
+            const auto& [word, level] = myQueue.front();
             for (auto i = 0; i < word.size(); ++i) {
                 if (word == endWord) {
                     return level;
