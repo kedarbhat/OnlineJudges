@@ -1,5 +1,4 @@
 class RandomizedCollection {
-  std::random_device theRandomDevice;
   std::unordered_map<int, std::unordered_set<std::size_t>> theMap;
   std::vector<int> theData;
 
