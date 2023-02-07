@@ -1,47 +1,43 @@
-<h2><a href="https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/">null. Insert Delete GetRandom O(1) - Duplicates allowed</a></h2><h3>null</h3><hr>Can you solve this real interview question? Insert Delete GetRandom O(1) - Duplicates allowed - RandomizedCollection is a data structure that contains a collection of numbers, possibly duplicates (i.e., a multiset). It should support inserting and removing specific elements and also reporting a random element.
+<h2><a href="https://leetcode.com/problems/plus-one/">null. Plus One</a></h2><h3>null</h3><hr>Can you solve this real interview question? Plus One - You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's.
 
-Implement the RandomizedCollection class:
-
- * RandomizedCollection() Initializes the empty RandomizedCollection object.
- * bool insert(int val) Inserts an item val into the multiset, even if the item is already present. Returns true if the item is not present, false otherwise.
- * bool remove(int val) Removes an item val from the multiset if present. Returns true if the item is present, false otherwise. Note that if val has multiple occurrences in the multiset, we only remove one of them.
- * int getRandom() Returns a random element from the current multiset of elements. The probability of each element being returned is linearly related to the number of the same values the multiset contains.
-
-You must implement the functions of the class such that each function works on average O(1) time complexity.
-
-Note: The test cases are generated such that getRandom will only be called if there is at least one item in the RandomizedCollection.
+Increment the large integer by one and return the resulting array of digits.
 
  
 
 Example 1:
 
 
-Input
-["RandomizedCollection", "insert", "insert", "insert", "getRandom", "remove", "getRandom"]
-[[], [1], [1], [2], [], [1], []]
-Output
-[null, true, false, true, 2, true, 1]
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Incrementing by one gives 123 + 1 = 124.
+Thus, the result should be [1,2,4].
 
-Explanation
-RandomizedCollection randomizedCollection = new RandomizedCollection();
-randomizedCollection.insert(1);   // return true since the collection does not contain 1.
-                                  // Inserts 1 into the collection.
-randomizedCollection.insert(1);   // return false since the collection contains 1.
-                                  // Inserts another 1 into the collection. Collection now contains [1,1].
-randomizedCollection.insert(2);   // return true since the collection does not contain 2.
-                                  // Inserts 2 into the collection. Collection now contains [1,1,2].
-randomizedCollection.getRandom(); // getRandom should:
-                                  // - return 1 with probability 2/3, or
-                                  // - return 2 with probability 1/3.
-randomizedCollection.remove(1);   // return true since the collection contains 1.
-                                  // Removes 1 from the collection. Collection now contains [1,2].
-randomizedCollection.getRandom(); // getRandom should return 1 or 2, both equally likely.
+
+Example 2:
+
+
+Input: digits = [4,3,2,1]
+Output: [4,3,2,2]
+Explanation: The array represents the integer 4321.
+Incrementing by one gives 4321 + 1 = 4322.
+Thus, the result should be [4,3,2,2].
+
+
+Example 3:
+
+
+Input: digits = [9]
+Output: [1,0]
+Explanation: The array represents the integer 9.
+Incrementing by one gives 9 + 1 = 10.
+Thus, the result should be [1,0].
 
 
  
 
 Constraints:
 
- * -231 <= val <= 231 - 1
- * At most 2 * 105 calls in total will be made to insert, remove, and getRandom.
- * There will be at least one element in the data structure when getRandom is called.
+ * 1 <= digits.length <= 100
+ * 0 <= digits[i] <= 9
+ * digits does not contain any leading 0's.
