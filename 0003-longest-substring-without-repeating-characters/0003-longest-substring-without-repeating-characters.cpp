@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int lengthOfLongestSubstring(std::string_view s) {
+    int lengthOfLongestSubstring(std::string_view s) noexcept {
        auto longestSubstring = 0;
        std::bitset<256> charsUsed;
        auto slow = 0;
