@@ -1,22 +1,27 @@
 class Solution {
-    std::vector<std::vector<int>> theResult;
-    void backtrack(int startIndex, std::string path) noexcept { 
-        if (startIndex == path.size()) {
-            theResult.emplace_back(std::vector<int>(path.cbegin(), path.cend()));
+    vector<vector<int>> theResult;
+    std::vector<bool> theUsedTracker;
+    void dfs(const vector<int>& nums, std::size_t startIdx, std::string path) noexcept {
+        if (startIdx == nums.size()) {
+            theResult.emplace_back(vector<int>(path.cbegin(), path.cend()));
+            return;
         }
-        for (auto i = startIndex; i < path.size(); ++i) {
-            std::swap(path[i], path[startIndex]);
-            backtrack(startIndex+1, path);
-            std::swap(path[i], path[startIndex]);
+        for (auto i = 0; i < theUsedTracker.size(); ++i) {
+            if (theUsedTracker[i]) {
+                continue;
+            }
+            theUsedTracker[i] = true;
+            path += nums[i];
+            dfs(nums, startIdx+1, path);
+            path.pop_back();
+            theUsedTracker[i] = false;
         }
     }
-
 public:
-    std::vector<std::vector<int>> permute(const std::vector<int>& nums) noexcept {
-        if (nums.empty()) {
-            return theResult;
-        }
-        backtrack(0, std::string(nums.cbegin(), nums.cend()));
+    vector<vector<int>> permute(vector<int>& nums) {
+        theUsedTracker.resize(nums.size());
+        auto path = std::string{};
+        dfs(nums, 0, path);
         return theResult;
     }
 };
