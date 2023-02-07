@@ -1,38 +1,29 @@
-<h2><a href="https://leetcode.com/problems/number-of-islands/">null. Number of Islands</a></h2><h3>null</h3><hr>Can you solve this real interview question? Number of Islands - Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+<h2><a href="https://leetcode.com/problems/maximum-product-subarray/">null. Maximum Product Subarray</a></h2><h3>null</h3><hr>Can you solve this real interview question? Maximum Product Subarray - Given an integer array nums, find a subarray that has the largest product, and return the product.
 
-An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+The test cases are generated so that the answer will fit in a 32-bit integer.
 
  
 
 Example 1:
 
 
-Input: grid = [
-  ["1","1","1","1","0"],
-  ["1","1","0","1","0"],
-  ["1","1","0","0","0"],
-  ["0","0","0","0","0"]
-]
-Output: 1
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
 
 
 Example 2:
 
 
-Input: grid = [
-  ["1","1","0","0","0"],
-  ["1","1","0","0","0"],
-  ["0","0","1","0","0"],
-  ["0","0","0","1","1"]
-]
-Output: 3
+Input: nums = [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
 
 
  
 
 Constraints:
 
- * m == grid.length
- * n == grid[i].length
- * 1 <= m, n <= 300
- * grid[i][j] is '0' or '1'.
+ * 1 <= nums.length <= 2 * 104
+ * -10 <= nums[i] <= 10
+ * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
