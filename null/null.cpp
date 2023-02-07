@@ -1,17 +1,29 @@
-class Solution {      
+
+static auto pointDistance = [](const vector<int>& point) noexcept { 
+    return point[0]*point[0] + point[1]*point[1]; 
+};
+
+template<>
+struct std::less<vector<int>> {
+    bool operator()(const vector<int>& lhs, const vector<int>& rhs) const noexcept {
+        return pointDistance(lhs) < pointDistance(rhs);
+    }
+};
+class Solution {
 public:
-    int minMeetingRooms(vector<vector<int>>& intervals) {
-        std::sort(intervals.begin(), intervals.end(), [](const auto& lhs, const auto& rhs) {
-            return lhs[0] < rhs[0];
-        });
-        std::priority_queue<int, vector<int>, std::greater<>> heap;
-        heap.push(intervals[0][1]);
-        for (auto i = 1; i < intervals.size(); ++i) {
-            if (heap.top() <= intervals[i][0]) {
-                heap.pop();
-            }
-            heap.push(intervals[i][1]);
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        priority_queue<vector<int>> pq(points.cbegin(), next(points.cbegin(), k));
+        for (auto i = k; i < points.size(); ++i) {
+            if (pointDistance(points[i]) < pointDistance(pq.top())) {
+                pq.pop();
+                pq.push(points[i]);
+            } 
         }
-        return heap.size();
+        vector<vector<int>> result;
+        while (!pq.empty()) {
+            result.push_back(pq.top());        
+            pq.pop();
+        }
+        return result;
     }
 };
