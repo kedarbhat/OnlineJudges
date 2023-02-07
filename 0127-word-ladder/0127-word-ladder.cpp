@@ -17,12 +17,14 @@ class Solution {
     }
 public:
     int ladderLength(const string& beginWord, const string& endWord, const vector<string>& wordList) {
-        std::deque<std::pair<std::string, int>> myQueue{std::make_pair(beginWord, 1)};
+        std::queue<std::pair<std::string, int>> myQueue;
+        myQueue.push(std::make_pair(beginWord, 1));
         auto seenWords = WordSetT{beginWord};
         auto transitionMap = createTransitionMap(wordList);
         while (!myQueue.empty()) {
-            const auto [word, level] = myQueue.front();
-            myQueue.pop_front();
+            const auto& queuedPair = myQueue.front();
+            const auto& word = queuedPair.first;
+            const auto level = queuedPair.second;
             for (auto i = 0; i < word.size(); ++i) {
                 if (word == endWord) {
                     return level;
@@ -32,10 +34,11 @@ public:
                     if (seenWords.find(nextWord) != seenWords.cend()) {
                         continue;
                     }
-                    myQueue.emplace_back(nextWord, level+1);
+                    myQueue.push(std::make_pair(nextWord, level+1));
                     seenWords.emplace(nextWord);
                 }
             }
+            myQueue.pop();
         }
         return 0;
     }
