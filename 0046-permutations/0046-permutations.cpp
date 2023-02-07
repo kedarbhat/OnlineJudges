@@ -1,7 +1,6 @@
 class Solution {
-    using ResultT = std::vector<std::vector<int>>;
-    ResultT theResult;
-    void backtrack(int startIndex, std::string path) { 
+    std::vector<std::vector<int>> theResult;
+    void backtrack(int startIndex, std::string path) noexcept { 
         if (startIndex == path.size()) {
             theResult.emplace_back(std::vector<int>(path.cbegin(), path.cend()));
         }
@@ -13,7 +12,7 @@ class Solution {
     }
 
 public:
-    ResultT permute(const std::vector<int>& nums) {
+    std::vector<std::vector<int>> permute(const std::vector<int>& nums) noexcept {
         if (nums.empty()) {
             return theResult;
         }
