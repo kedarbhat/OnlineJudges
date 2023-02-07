@@ -1,21 +1,31 @@
+class RandomizedCollection {
+  std::random_device theRandomDevice;
+  std::unordered_map<int, std::unordered_set<std::size_t>> theMap;
+  std::vector<int> theData;
 
-class Solution {
-public:
-    int maxProduct(vector<int>& nums) {
-        if (nums.empty()) {
-            return 0;
-        }
-        auto minProduct = nums[0];
-        auto maxProduct = nums[0];
-        auto result = nums[0];
-        for (auto i = 1u; i < nums.size(); ++i) {
-            auto prevMaxProduct = maxProduct;
-            auto prevMinProduct = minProduct;
-            minProduct = std::min({nums[i], prevMaxProduct*nums[i], prevMinProduct*nums[i]});
-            maxProduct = std::max({nums[i], prevMaxProduct*nums[i], prevMinProduct*nums[i]});
-            result = std::max(maxProduct, result);
-        }
-        return result;
-        
+ public:
+  bool insert(int val) noexcept {
+    theData.push_back(val);
+    theMap[val].emplace(theData.size()-1);
+    return theMap[val].size() == 1;
+  }
+    
+  bool remove(int val) noexcept {
+    if (theMap[val].empty()) {
+      return false;
     }
+    auto prevLastElement = theData.back();
+    auto removeIdx = *theMap[val].cbegin();
+    theMap[val].erase(removeIdx);
+    theMap[prevLastElement].emplace(removeIdx);
+    theMap[prevLastElement].erase(theData.size()-1);
+    theData[removeIdx] = prevLastElement;
+    theData.pop_back();
+    return true;
+  }
+    
+  int getRandom() noexcept {
+    const auto idx = std::rand() % theData.size();
+    return theData[idx];
+  }
 };
