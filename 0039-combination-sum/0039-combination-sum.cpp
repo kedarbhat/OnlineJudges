@@ -2,7 +2,7 @@ class Solution {
     vector<vector<int>> theResult;
     vector<int> theCandidates;
     int theTarget;
-    void dfs(const int currentSum, const int currentIndex, std::vector<int> path) noexcept {
+    void dfs(const int currentSum, const int currentIndex, std::vector<int>& path) noexcept {
         if (currentSum > theTarget) {
             return;
         }
