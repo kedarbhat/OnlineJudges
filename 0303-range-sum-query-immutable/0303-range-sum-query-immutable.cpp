@@ -1,7 +1,8 @@
 class NumArray {
-    vector<int> prefixSums{0};
+    vector<int> prefixSums;
+
 public:
-    NumArray(const vector<int>& nums) {
+    NumArray(const vector<int>& nums) : prefixSums{0} {
         std::partial_sum(nums.cbegin(), nums.cend(), std::back_inserter(prefixSums));
     }
     
