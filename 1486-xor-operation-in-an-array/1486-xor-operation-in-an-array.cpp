@@ -1,7 +1,7 @@
 
 class Solution {
 public:
-    constexpr int xorOperation(const int n, const int start) const {
+    static constexpr int xorOperation(int n, int start) noexcept {
         auto result = start;
         for (auto i = 1; i < n; ++i) {
             result ^= start + 2*i;
