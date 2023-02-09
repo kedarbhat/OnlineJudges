@@ -1,8 +1,8 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        std::unique_ptr<ListNode> dummyHead = std::make_unique<ListNode>(0);
-        ListNode* curr = dummyHead.get();
+        ListNode dummyHead{0};
+        ListNode* curr = std::addressof(dummyHead);
         auto carry = 0;
         while (l1 != nullptr || l2 != nullptr || carry != 0) {
             auto x = l1 != nullptr ? l1->val : 0;
@@ -16,6 +16,6 @@ public:
             l1 = l1 != nullptr ? l1->next : nullptr;
             l2 = l2 != nullptr ? l2->next : nullptr;
         }
-        return dummyHead->next;
+        return dummyHead.next;
     }
 };
