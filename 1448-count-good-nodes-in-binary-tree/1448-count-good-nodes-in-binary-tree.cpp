@@ -11,11 +11,11 @@
  */
 class Solution {
 public:
-    int goodNodes(TreeNode* root, int maxSoFar = -10001) noexcept {
+    static constexpr int goodNodes(TreeNode* root, int maxSoFar = -10001) noexcept {
         if (root == nullptr) {
             return 0;
         }
-        const auto newMaxSoFar = std::max(root->val, maxSoFar);
+        auto newMaxSoFar = std::max(root->val, maxSoFar);
         return (root->val >= maxSoFar) * 1 + goodNodes(root->left, newMaxSoFar) + goodNodes(root->right, newMaxSoFar);
         
     }
