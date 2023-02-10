@@ -23,7 +23,7 @@ class Solution {
         }
 
         ListNode result{0};
-        auto* dummy = std::addressof(result);
+        auto* dummy = &result;
 
         while (lhs != nullptr && rhs != nullptr) {
             dummy->next = compare(lhs, rhs) ? lhs : rhs;
