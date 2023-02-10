@@ -1,29 +1,29 @@
 class MedianFinder {
-    std::priority_queue<int> maxQueue;
-    std::priority_queue<int, std::vector<int>, std::greater<>> minQueue;
+    std::priority_queue<int, std::vector<int>, std::less<>>    smallerNumbersMaxHeap;
+    std::priority_queue<int, std::vector<int>, std::greater<>> largerNumbersMinHeap; 
 public:    
     void addNum(int num) {
-       if (maxQueue.empty() || num < maxQueue.top()) {
-           maxQueue.push(num);
+       if (smallerNumbersMaxHeap.empty() || num < smallerNumbersMaxHeap.top()) {
+           smallerNumbersMaxHeap.push(num);
        } else {
-           minQueue.push(num);
+           largerNumbersMinHeap.push(num);
        }
 
-       while (maxQueue.size() > minQueue.size()+1) {
-           minQueue.push(maxQueue.top());
-           maxQueue.pop();
+       while (smallerNumbersMaxHeap.size() > largerNumbersMinHeap.size()+1) {
+           largerNumbersMinHeap.push(smallerNumbersMaxHeap.top());
+           smallerNumbersMaxHeap.pop();
        }
-       while (maxQueue.size() < minQueue.size()) {
-           maxQueue.push(minQueue.top());
-           minQueue.pop();
+       while (smallerNumbersMaxHeap.size() < largerNumbersMinHeap.size()) {
+           smallerNumbersMaxHeap.push(largerNumbersMinHeap.top());
+           largerNumbersMinHeap.pop();
        }
     }
     
     double findMedian() {
-        if (((maxQueue.size() + minQueue.size()) & 1) == 1) {
-            return maxQueue.top();
+        if (((smallerNumbersMaxHeap.size() + largerNumbersMinHeap.size()) & 1) == 1) {
+            return smallerNumbersMaxHeap.top();
         }
-        return (maxQueue.top() + minQueue.top())/2.0;
+        return (smallerNumbersMaxHeap.top() + largerNumbersMinHeap.top())/2.0;
     }
 };
 
