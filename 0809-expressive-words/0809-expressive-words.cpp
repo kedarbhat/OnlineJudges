@@ -7,16 +7,16 @@ class Solution {
         return currentIdx - startIdx;
     }
 
-    static constexpr bool isStretchyWord(std::string_view s, std::string_view w) noexcept {
-        if (s.empty() || w.empty()) {
+    static constexpr bool isStretchyWord(std::string_view stretchyWord, std::string_view word) noexcept {
+        if (stretchyWord.empty() || word.empty()) {
             return false;
         }
         int i = 0;
         int j = 0;
-        while (i < s.size() && j < w.size()) {
-            if (s[i] == w[j]) {
-                auto sRepeatedLetters = countRepeatedLetters(s, i);
-                auto wRepeatedLetters = countRepeatedLetters(w, j);
+        while (i < stretchyWord.size() && j < word.size()) {
+            if (stretchyWord[i] == word[j]) {
+                auto sRepeatedLetters = countRepeatedLetters(stretchyWord, i);
+                auto wRepeatedLetters = countRepeatedLetters(word, j);
                 if (sRepeatedLetters < 3 && sRepeatedLetters != wRepeatedLetters || sRepeatedLetters >= 3 && sRepeatedLetters < wRepeatedLetters) {
                     return false;
                 } 
@@ -27,7 +27,7 @@ class Solution {
                 return false;
             }
         }
-        return i == s.size() && j == w.size();
+        return i == stretchyWord.size() && j == word.size();
     }
 public:
     int expressiveWords(const string& s, const vector<string>& words) noexcept {
