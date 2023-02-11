@@ -30,7 +30,7 @@ class Solution {
         return i == s.size() && j == w.size();
     }
 public:
-    int expressiveWords(const string& s, const vector<string>& words) {
+    int expressiveWords(const string& s, const vector<string>& words) noexcept {
         return std::count_if(words.cbegin(), words.cend(), [&](std::string_view word) { return isStretchyWord(s, word); });
     }
 };
