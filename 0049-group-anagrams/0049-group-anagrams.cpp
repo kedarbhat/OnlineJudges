@@ -32,7 +32,7 @@ public:
             std::make_move_iterator(myGroupedAnagrams.begin()), 
             std::make_move_iterator(myGroupedAnagrams.end()), 
             std::back_inserter(myResult), 
-            [](auto&& p) { return std::move(p.second); });       
+            [](const auto& p) { return p.second; });       
         return myResult;
     }
 };
