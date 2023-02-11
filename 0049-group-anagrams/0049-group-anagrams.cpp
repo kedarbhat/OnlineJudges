@@ -26,9 +26,10 @@ public:
             myGroupedAnagrams[createGroupedAnagram(str)].push_back(str);
         }
         std::vector<std::vector<std::string>> myResult;
-        std::transform(myGroupedAnagrams.cbegin(), myGroupedAnagrams.cend(), std::back_inserter(myResult), [](const auto& p) {
-            return p.second;
-        });       
+        std::transform(
+            std::make_move_iterator(myGroupedAnagrams.begin()), 
+            std::make_move_iterator(myGroupedAnagrams.end()), 
+            std::back_inserter(myResult), [](auto&& p) { return p.second; });       
         return myResult;
     }
 };
