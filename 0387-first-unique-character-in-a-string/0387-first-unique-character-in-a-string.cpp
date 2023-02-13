@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int firstUniqChar(string s) {
+    int firstUniqChar(std::string_view s) noexcept {
         std::unordered_map<char, std::size_t> unique_characters;
         std::unordered_set<char> nonunique_characters;
         for (auto i = 0u; i < s.size(); ++i) {
@@ -15,7 +15,8 @@ public:
                 unique_characters.emplace(myChar, i);
             }
         }
-        auto iter = std::max_element(std::cbegin(unique_characters), std::cend(unique_characters), [](const auto& lhs, const auto& rhs) { return std::get<std::size_t>(lhs) > std::get<std::size_t>(rhs); });
+        auto iter = std::max_element(std::cbegin(unique_characters), std::cend(unique_characters),
+            [](const auto& lhs, const auto& rhs) { return std::get<std::size_t>(lhs) > std::get<std::size_t>(rhs); });
         return iter == std::cend(unique_characters) ? -1 : static_cast<int>(std::get<std::size_t>(*iter));
     }
 };
