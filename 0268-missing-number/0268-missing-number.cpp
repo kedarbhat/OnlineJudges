@@ -1,9 +1,9 @@
 class Solution {
 public:
-    int missingNumber(vector<int>& nums) {
-        auto n = nums.size();
-        auto numSum = std::accumulate(nums.cbegin(), nums.cend(), 0);
-        auto theoSum = (n*(n+1))/2;
+    int missingNumber(vector<int>& nums) const noexcept {
+        const auto n = nums.size();
+        const auto theoSum = (n*(n+1))/2;
+        const auto numSum = std::reduce(nums.cbegin(), nums.cend(), 0);
         return theoSum-numSum;
     }
 };
