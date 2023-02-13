@@ -16,10 +16,7 @@ public:
         for (auto num : nums2) {
             if (auto iter = myNums1Counter.find(num); iter != myNums1Counter.cend()) {
                 auto numRepeats = std::min(myNums1Counter[num], myNums2Counter[num]);
-                while (numRepeats > 0) {
-                    result.emplace_back(num);
-                    --numRepeats;
-                }
+                std::fill_n(std::back_inserter(result), numRepeats, num);
                 myNums1Counter.erase(num);
             }
         }
