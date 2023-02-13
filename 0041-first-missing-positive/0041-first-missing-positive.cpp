@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int firstMissingPositive(vector<int>& nums) {
+    int firstMissingPositive(const std::vector<int>& nums) {
       std::unordered_set<int> nums_seen;
       auto max_number = 0;
       for (auto i : nums) {
