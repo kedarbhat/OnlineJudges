@@ -1,6 +1,9 @@
 class Solution {
 public:
     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        if (nums2.size() > nums1.size()) {
+            std::swap(nums1, nums2);
+        }
         std::unordered_map<int, int> myNums1Counter;
         for (auto num : nums1) {
             ++myNums1Counter[num];
