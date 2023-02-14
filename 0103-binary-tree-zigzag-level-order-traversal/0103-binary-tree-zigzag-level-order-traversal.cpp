@@ -17,14 +17,18 @@ public:
             return result;
         }
         std::deque<TreeNode*> queue{root};
-        bool rightToLeft = false;
+        bool leftToRight = false;
         while (!queue.empty()) {
             auto levelSize = queue.size();
-            vector<int> levelResult;
+            std::deque<int> levelResult;
             for (auto i = 0; i < levelSize; ++i) {
                 auto* currentNode = queue.front();
                 queue.pop_front();
-                levelResult.push_back(currentNode->val);
+                if (leftToRight) {
+                    levelResult.push_front(currentNode->val);
+                } else {
+                    levelResult.push_back(currentNode->val);
+                }
                 if (currentNode->left != nullptr) {
                     queue.push_back(currentNode->left);
                 }
@@ -32,11 +36,8 @@ public:
                     queue.push_back(currentNode->right);
                 }
             }
-            if (rightToLeft) {
-                std::reverse(levelResult.begin(), levelResult.end());
-            }
-            rightToLeft = !rightToLeft;
-            result.emplace_back(levelResult);
+            leftToRight = !leftToRight;
+            result.emplace_back(std::vector<int>(levelResult.begin(), levelResult.end()));
         }
         return result;
     }
