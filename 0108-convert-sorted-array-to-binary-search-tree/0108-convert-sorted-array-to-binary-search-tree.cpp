@@ -10,15 +10,20 @@
  * };
  */
 class Solution {
-public:
-    TreeNode* sortedArrayToBST(const std::vector<int>& nums) {
-    if (nums.empty()) {
-        return nullptr;
+    using IteratorT = std::vector<int>::const_iterator;
+    static TreeNode* sortedArrayToBST(IteratorT start, IteratorT finish) noexcept {
+        if (start == finish) {
+            return nullptr;
+        }
+        auto mid = std::distance(start, finish)/2;
+        auto* resultNode = new TreeNode(*std::next(start, mid));
+        resultNode->left = sortedArrayToBST(start, std::next(start, mid));
+        resultNode->right = sortedArrayToBST(std::next(start, mid+1), finish);
+        return resultNode;
     }
-    auto mid = nums.size() / 2;
-    auto root = new TreeNode(nums[mid]);
-    root->left = sortedArrayToBST(std::vector<int>(nums.begin(), nums.begin() + mid));
-    root->right = sortedArrayToBST(std::vector<int>(nums.begin() + mid + 1, nums.end()));
-    return root;
+
+public:
+    TreeNode* sortedArrayToBST(const std::vector<int>& nums) noexcept {
+        return sortedArrayToBST(nums.cbegin(), nums.cend());
     }
 };
