@@ -4,7 +4,7 @@ public:
         std::unordered_map<char, std::size_t> unique_characters;
         std::unordered_set<char> nonunique_characters;
         for (auto i = 0u; i < s.size(); ++i) {
-            auto myChar = s[i];
+            const auto myChar = s[i];
             if (nonunique_characters.find(myChar) != std::cend(nonunique_characters)) {
                 continue;
             }
