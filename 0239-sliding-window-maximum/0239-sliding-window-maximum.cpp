@@ -1,24 +1,22 @@
 class Solution {
 public:
-    vector<int> maxSlidingWindow(vector<int>& v, int windowSize) {
-        deque<int> slidingWindow;
-        vector<int> result;
-        auto left = 0;
-        for (auto right = 0; right < v.size(); ++right) {
-            // pop smaller values from q
-            while (!slidingWindow.empty() && v[slidingWindow.back()] < v[right]) {
-                slidingWindow.pop_back();
+    std::vector<int> maxSlidingWindow(const std::vector<int>& aVector, const int aWindowSize) noexcept {
+        std::deque<int> mySlidingWindow;
+        std::vector<int> myResult;
+        auto left = 0u;
+        for (auto right = 0u; right < aVector.size(); ++right) {
+            while (!mySlidingWindow.empty() && aVector[mySlidingWindow.back()] < aVector[right]) {
+                mySlidingWindow.pop_back();
             }
-            slidingWindow.push_back(right);
-            // remove left val from window
-            if (left > slidingWindow.front()) {
-                slidingWindow.pop_front();
+            mySlidingWindow.push_back(right);
+            if (left > mySlidingWindow.front()) {
+                mySlidingWindow.pop_front();
             }
-            if (right + 1 >= windowSize) {
-                result.push_back(v[slidingWindow.front()]);
+            if (right + 1 >= aWindowSize) {
+                myResult.push_back(aVector[mySlidingWindow.front()]);
                 ++left;
             }
         }
-        return result;
+        return myResult;
     }
 };
