@@ -4,15 +4,15 @@ public:
         if (s.empty()) {
             return 0;
         }
-        int longestSubstring = 0;
-        std::unordered_map<char, int> usedLetters;
-        for (int i = 0, sequenceStart = 0; i < s.size(); ++i) {
+        std::size_t longestSubstring = 0;
+        std::unordered_map<char, std::size_t> usedLetters;
+        for (std::size_t i = 0, sequenceStart = 0; i < s.size(); ++i) {
             auto current = s[i];
             if (usedLetters.find(current) == usedLetters.cend()) {
                 usedLetters[current] = i;
-                longestSubstring = std::max(longestSubstring, static_cast<int>(usedLetters.size()));
+                longestSubstring = std::max(longestSubstring, usedLetters.size());
             } else {
-                longestSubstring = std::max(longestSubstring, static_cast<int>(usedLetters.size()));
+                longestSubstring = std::max(longestSubstring, usedLetters.size());
                 const auto finish = usedLetters[current];
                 for (auto j = sequenceStart; j <= finish; ++j) {
                     usedLetters.erase(s[j]);
@@ -21,6 +21,6 @@ public:
                 sequenceStart = finish+1;
             }
         }
-        return longestSubstring;
+        return static_cast<int>(longestSubstring);
     }
 };
