@@ -1,12 +1,11 @@
 class Solution {
-    [[gnu::pure]] static bool overlap(const vector<int>& lhs, const vector<int>& rhs) noexcept {
+    static bool overlap(const std::vector<int>& lhs, const std::vector<int>& rhs) noexcept {
         return lhs[1] > rhs[0];
     }
 
 public:
-    bool canAttendMeetings(vector<vector<int>>& intervals) {
+    bool canAttendMeetings(std::vector<std::vector<int>>& intervals) noexcept {
         std::sort(intervals.begin(), intervals.end());
-        auto iter = std::adjacent_find(intervals.cbegin(), intervals.cend(), overlap);
-        return iter == intervals.cend();
+        return intervals.cend() == std::adjacent_find(intervals.cbegin(), intervals.cend(), overlap);
     }
 };
