@@ -1,6 +1,6 @@
 class Solution {
 public:
-int orangesRotting(std::vector<std::vector<int>>& grid) {
+int orangesRotting(std::vector<std::vector<int>>& grid) noexcept {
     int rows = grid.size();
     int cols = grid[0].size();
     int minutes = 0;
@@ -10,7 +10,7 @@ int orangesRotting(std::vector<std::vector<int>>& grid) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             if (grid[i][j] == 1) {
-                freshOranges++;
+                ++freshOranges;
             } else if (grid[i][j] == 2) {
                 rotten.push(std::make_pair(i, j));
             }
