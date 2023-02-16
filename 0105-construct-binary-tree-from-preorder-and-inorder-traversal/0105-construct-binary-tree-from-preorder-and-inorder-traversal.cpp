@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    TreeNode* buildTree(const vector<int>& preorder, const vector<int>& inorder) noexcept {
         if (preorder.empty() || inorder.empty()) {
             return nullptr;
         }
