@@ -1,55 +1,25 @@
-class Trie {
-    struct TrieNode {
-        std::array<std::unique_ptr<TrieNode>, 26> theChildren;
-        bool theEnd = false;
-    };
 
-    std::unique_ptr<TrieNode> theRoot;
+class Solution {
+    std::vector<std::vector<int>> theResult;
+    int theN{};
+    int theK{};
+    void backtrack(int start, std::vector<int>& current) noexcept {
+        if (current.size() == theK) {
+            theResult.emplace_back(current);
+            return;
+        }
+        for (auto j = start; j < theN+1; ++j) {
+            current.push_back(j);
+            backtrack(j+1, current);
+            current.pop_back();
+        }
+    }
 public:
-    Trie() : theRoot(std::make_unique<TrieNode>()) {
-    }
-    
-    void insert(string word) {
-        auto* myCurrent = theRoot.get();
-        for (auto c : word) {
-            auto idx = c - 'a';
-            if (myCurrent->theChildren[idx] == nullptr) {
-                myCurrent->theChildren[idx] = std::make_unique<TrieNode>();
-            }
-            myCurrent = myCurrent->theChildren[idx].get();
-        }
-        myCurrent->theEnd = true;
-    }
-    
-    bool search(string word) const {
-        auto* myCurrent = theRoot.get();
-        for (auto c : word) {
-            auto idx = c - 'a';
-            if (myCurrent->theChildren[idx] == nullptr) {
-                return false;
-            }
-            myCurrent = myCurrent->theChildren[idx].get();
-        }
-        return myCurrent->theEnd;
-    }
-    
-    bool startsWith(string prefix) const {
-        auto* myCurrent = theRoot.get();
-        for (auto c : prefix) {
-            auto idx = c - 'a';
-            if (myCurrent->theChildren[idx] == nullptr) {
-                return false;
-            }
-            myCurrent = myCurrent->theChildren[idx].get();
-        }
-        return true;
+    std::vector<std::vector<int>> combine(int n, int k) {
+        theN = n;
+        theK = k;
+        auto current = std::vector<int>{};
+        backtrack(1, current);
+        return theResult;
     }
 };
-
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie* obj = new Trie();
- * obj->insert(word);
- * bool param_2 = obj->search(word);
- * bool param_3 = obj->startsWith(prefix);
- */
