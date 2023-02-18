@@ -9,24 +9,24 @@
  * };
  */
 class Solution {
-      private:
-        ListNode* reverse(ListNode* head) {
-          ListNode* pre = nullptr;
-          ListNode* cur = head;
-          while (cur != nullptr) {
-            ListNode* next = cur->next;
-            cur->next = pre;
-            pre = cur;
-            cur = next;
-          }
-          return pre;
-        }
+  private:
+    ListNode* reverse(ListNode* head) noexcept {
+      ListNode* pre = nullptr;
+      ListNode* cur = head;
+      while (cur != nullptr) {
+        ListNode* next = cur->next;
+        cur->next = pre;
+        pre = cur;
+        cur = next;
+      }
+      return pre;
+    }
  public:
-  ListNode* reverseKGroup(ListNode* head, int k) {
-    ListNode* dummy = new ListNode(0);
-    dummy->next = head;
-    ListNode* pre = dummy;
-    ListNode* end = dummy;
+  ListNode* reverseKGroup(ListNode* head, int k) noexcept {
+    ListNode dummy = ListNode{0};
+    dummy.next = head;
+    auto* pre = &dummy;
+    auto* end = &dummy;
     while (end->next != nullptr) {
       for (int i = 0; i < k && end != nullptr; i++) {
         end = end->next;
@@ -42,6 +42,6 @@ class Solution {
       pre = start;
       end = pre;
     }
-    return dummy->next;        
+    return dummy.next;        
   }
 };
