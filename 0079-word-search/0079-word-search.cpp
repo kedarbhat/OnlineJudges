@@ -1,7 +1,7 @@
 class Solution {
   bool dfs(std::vector<std::vector<char>>&board, 
            std::vector<std::vector<bool>>& visited, 
-           std::string aWord, int currentIdx, int i, int j) {
+           std::string_view aWord, int currentIdx, int i, int j) {
     if (currentIdx == aWord.size()) {
        return true;
     }
