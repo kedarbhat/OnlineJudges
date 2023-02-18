@@ -1,29 +1,28 @@
-<h2><a href="https://leetcode.com/problems/combinations/">null. Combinations</a></h2><h3>null</h3><hr>Can you solve this real interview question? Combinations - Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
-
-You may return the answer in any order.
+<h2><a href="https://leetcode.com/problems/daily-temperatures/">null. Daily Temperatures</a></h2><h3>null</h3><hr>Can you solve this real interview question? Daily Temperatures - Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.
 
  
 
 Example 1:
 
-
-Input: n = 4, k = 2
-Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
-Explanation: There are 4 choose 2 = 6 total combinations.
-Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be the same combination.
+Input: temperatures = [73,74,75,71,69,72,76,73]
+Output: [1,1,4,2,1,1,0,0]
 
 
 Example 2:
 
+Input: temperatures = [30,40,50,60]
+Output: [1,1,1,0]
 
-Input: n = 1, k = 1
-Output: [[1]]
-Explanation: There is 1 choose 1 = 1 total combination.
+
+Example 3:
+
+Input: temperatures = [30,60,90]
+Output: [1,1,0]
 
 
  
 
 Constraints:
 
- * 1 <= n <= 20
- * 1 <= k <= n
+ * 1 <= temperatures.length <= 105
+ * 30 <= temperatures[i] <= 100
