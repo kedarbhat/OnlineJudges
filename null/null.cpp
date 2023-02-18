@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int connectSticks(vector<int>& sticks) {
-        std::priority_queue<int, std::vector<int>, std::greater<int>> myMinHeap;
-        for (auto stick : sticks) {
-            myMinHeap.push(stick);
+    int furthestBuilding(const std::vector<int>& heights, int bricks, int ladders) noexcept {
+        std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+        for (int i = 0; i < heights.size() - 1; ++i) {
+            int diff = heights[i + 1] - heights[i];
+            if (diff > 0) {
+                pq.push(diff);
+                if (pq.size() > ladders) {
+                    bricks -= pq.top();
+                    pq.pop();
+                }
+                if (bricks < 0) {
+                    return i;
+                }
+            }
         }
-        int totalCost = 0;
-        while (myMinHeap.size() > 1) {
-            auto stick1 = myMinHeap.top();
-            myMinHeap.pop();
-            auto stick2 = myMinHeap.top();
-            myMinHeap.pop();
-            totalCost += stick1 + stick2;
-            myMinHeap.push(stick1 + stick2);
-        }
-        return totalCost;
+        return heights.size() - 1;
     }
 };
