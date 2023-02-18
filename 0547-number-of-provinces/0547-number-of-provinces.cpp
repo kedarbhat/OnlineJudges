@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int findCircleNum(std::vector<std::vector<int>>& isConnected) noexcept {
+    int findCircleNum(const std::vector<std::vector<int>>& isConnected) noexcept {
         using ssize_t = std::make_signed_t<std::size_t>;
         auto n = static_cast<ssize_t>(isConnected.size());
         std::vector<int> parent(n);
