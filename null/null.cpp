@@ -1,34 +1,29 @@
 class Solution {
-  int findRoot(std::vector<int>& parent, int i) {
-    while (parent[i] != i) {
-      parent[i] = parent[parent[i]];
-      i = parent[i];
-    }
-    return i;
-  }
  public:
-  std::string smallestStringWithSwaps(std::string aString, const std::vector<std::vector<int>>& pairs) {
-    std::vector<int> parent(aString.size());
-    for (int i = 0; i < parent.size(); ++i) {
-      parent[i] = i;
-    }
-    for (const auto& pair : pairs) {
-      const int root1 = findRoot(parent, pair[0]);
-      const int root2 = findRoot(parent, pair[1]);
-      if (root1 != root2) {
-        parent[root1] = root2;
+  int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+    int n = grid.size();
+    if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
+    vector<vector<int>> dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    queue<pair<int, int>> q;
+    q.push({0, 0});
+    grid[0][0] = 1;
+    int step = 1;
+    while (!q.empty()) {
+      int size = q.size();
+      for (int i = 0; i < size; ++i) {
+        auto [x, y] = q.front();
+        q.pop();
+        if (x == n - 1 && y == n - 1) return step;
+        for (auto& dir : dirs) {
+          int nx = x + dir[0];
+          int ny = y + dir[1];
+          if (nx < 0 || nx >= n || ny < 0 || ny >= n || grid[nx][ny] == 1) continue;
+          q.push({nx, ny});
+          grid[nx][ny] = 1;
+        }
       }
+      ++step;
     }
-    std::unordered_map<int, std::priority_queue<char, std::vector<char>, std::greater<>>> map;
-    for (int i = 0; i < aString.size(); ++i) {
-      const int root = findRoot(parent, i);
-      map[root].push(aString[i]);
-    }
-    for (int i = 0; i < aString.size(); ++i) {
-      const int root = findRoot(parent, i);
-      aString[i] = map[root].top();
-      map[root].pop();
-    }
-    return aString;
+    return -1;
   }
 };
