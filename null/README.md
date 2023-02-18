@@ -1,45 +1,50 @@
-<h2><a href="https://leetcode.com/problems/minimum-cost-to-connect-sticks/">null. Minimum Cost to Connect Sticks</a></h2><h3>null</h3><hr>Can you solve this real interview question? Minimum Cost to Connect Sticks - You have some number of sticks with positive integer lengths. These lengths are given as an array sticks, where sticks[i] is the length of the ith stick.
+<h2><a href="https://leetcode.com/problems/furthest-building-you-can-reach/">null. Furthest Building You Can Reach</a></h2><h3>null</h3><hr>Can you solve this real interview question? Furthest Building You Can Reach - You are given an integer array heights representing the heights of buildings, some bricks, and some ladders.
 
-You can connect any two sticks of lengths x and y into one stick by paying a cost of x + y. You must connect all the sticks until there is only one stick remaining.
+You start your journey from building 0 and move to the next building by possibly using bricks or ladders.
 
-Return the minimum cost of connecting all the given sticks into one stick in this way.
+While moving from building i to building i+1 (0-indexed),
+
+ * If the current building's height is greater than or equal to the next building's height, you do not need a ladder or bricks.
+ * If the current building's height is less than the next building's height, you can either use one ladder or (h[i+1] - h[i]) bricks.
+
+Return the furthest building index (0-indexed) you can reach if you use the given ladders and bricks optimally.
 
  
 
 Example 1:
 
+[https://assets.leetcode.com/uploads/2020/10/27/q4.gif]
 
-Input: sticks = [2,4,3]
-Output: 14
-Explanation: You start with sticks = [2,4,3].
-1. Combine sticks 2 and 3 for a cost of 2 + 3 = 5. Now you have sticks = [5,4].
-2. Combine sticks 5 and 4 for a cost of 5 + 4 = 9. Now you have sticks = [9].
-There is only one stick left, so you are done. The total cost is 5 + 9 = 14.
+
+Input: heights = [4,2,7,6,9,14,12], bricks = 5, ladders = 1
+Output: 4
+Explanation: Starting at building 0, you can follow these steps:
+- Go to building 1 without using ladders nor bricks since 4 >= 2.
+- Go to building 2 using 5 bricks. You must use either bricks or ladders because 2 < 7.
+- Go to building 3 without using ladders nor bricks since 7 >= 6.
+- Go to building 4 using your only ladder. You must use either bricks or ladders because 6 < 9.
+It is impossible to go beyond building 4 because you do not have any more bricks or ladders.
 
 
 Example 2:
 
 
-Input: sticks = [1,8,3,5]
-Output: 30
-Explanation: You start with sticks = [1,8,3,5].
-1. Combine sticks 1 and 3 for a cost of 1 + 3 = 4. Now you have sticks = [4,8,5].
-2. Combine sticks 4 and 5 for a cost of 4 + 5 = 9. Now you have sticks = [9,8].
-3. Combine sticks 9 and 8 for a cost of 9 + 8 = 17. Now you have sticks = [17].
-There is only one stick left, so you are done. The total cost is 4 + 9 + 17 = 30.
+Input: heights = [4,12,2,7,3,18,20,3,19], bricks = 10, ladders = 2
+Output: 7
 
 
 Example 3:
 
 
-Input: sticks = [5]
-Output: 0
-Explanation: There is only one stick, so you don't need to do anything. The total cost is 0.
+Input: heights = [14,3,19,3], bricks = 17, ladders = 0
+Output: 3
 
 
  
 
 Constraints:
 
- * 1 <= sticks.length <= 104
- * 1 <= sticks[i] <= 104
+ * 1 <= heights.length <= 105
+ * 1 <= heights[i] <= 106
+ * 0 <= bricks <= 109
+ * 0 <= ladders <= heights.length
