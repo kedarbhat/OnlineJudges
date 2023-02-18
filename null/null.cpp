@@ -1,17 +1,19 @@
 class Solution {
 public:
-    vector<int> dailyTemperatures(const vector<int>& temperatures) {
-        std::stack<int> myIndexStack;
-        std::vector<int> result(temperatures.size(), 0);
-        for (auto currentTempIdx = 0; currentTempIdx < temperatures.size(); ++currentTempIdx) {
-            auto currentTemp = temperatures[currentTempIdx];
-            while (!myIndexStack.empty() && temperatures[myIndexStack.top()] < currentTemp) {
-                auto prevDayIdx = myIndexStack.top();
-                myIndexStack.pop();
-                result[prevDayIdx] = currentTempIdx-prevDayIdx;
-            }
-            myIndexStack.push(currentTempIdx);
+    int connectSticks(vector<int>& sticks) {
+        std::priority_queue<int, std::vector<int>, std::greater<int>> myMinHeap;
+        for (auto stick : sticks) {
+            myMinHeap.push(stick);
         }
-        return result;
+        int totalCost = 0;
+        while (myMinHeap.size() > 1) {
+            auto stick1 = myMinHeap.top();
+            myMinHeap.pop();
+            auto stick2 = myMinHeap.top();
+            myMinHeap.pop();
+            totalCost += stick1 + stick2;
+            myMinHeap.push(stick1 + stick2);
+        }
+        return totalCost;
     }
 };
