@@ -1,47 +1,44 @@
-<h2><a href="https://leetcode.com/problems/smallest-string-with-swaps/">null. Smallest String With Swaps</a></h2><h3>null</h3><hr>Can you solve this real interview question? Smallest String With Swaps - You are given a string s, and an array of pairs of indices in the string pairs where pairs[i] = [a, b] indicates 2 indices(0-indexed) of the string.
+<h2><a href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">null. Shortest Path in Binary Matrix</a></h2><h3>null</h3><hr>Can you solve this real interview question? Shortest Path in Binary Matrix - Given an n x n binary matrix grid, return the length of the shortest clear path in the matrix. If there is no clear path, return -1.
 
-You can swap the characters at any pair of indices in the given pairs any number of times.
+A clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0)) to the bottom-right cell (i.e., (n - 1, n - 1)) such that:
 
-Return the lexicographically smallest string that s can be changed to after using the swaps.
+ * All the visited cells of the path are 0.
+ * All the adjacent cells of the path are 8-directionally connected (i.e., they are different and they share an edge or a corner).
+
+The length of a clear path is the number of visited cells of this path.
 
  
 
 Example 1:
 
+[https://assets.leetcode.com/uploads/2021/02/18/example1_1.png]
 
-Input: s = "dcab", pairs = [[0,3],[1,2]]
-Output: "bacd"
-Explaination: 
-Swap s[0] and s[3], s = "bcad"
-Swap s[1] and s[2], s = "bacd"
+
+Input: grid = [[0,1],[1,0]]
+Output: 2
 
 
 Example 2:
 
+[https://assets.leetcode.com/uploads/2021/02/18/example2_1.png]
 
-Input: s = "dcab", pairs = [[0,3],[1,2],[0,2]]
-Output: "abcd"
-Explaination: 
-Swap s[0] and s[3], s = "bcad"
-Swap s[0] and s[2], s = "acbd"
-Swap s[1] and s[2], s = "abcd"
+
+Input: grid = [[0,0,0],[1,1,0],[1,1,0]]
+Output: 4
+
 
 Example 3:
 
 
-Input: s = "cba", pairs = [[0,1],[1,2]]
-Output: "abc"
-Explaination: 
-Swap s[0] and s[1], s = "bca"
-Swap s[1] and s[2], s = "bac"
-Swap s[0] and s[1], s = "abc"
+Input: grid = [[1,0,0],[1,1,0],[1,1,0]]
+Output: -1
 
 
  
 
 Constraints:
 
- * 1 <= s.length <= 10^5
- * 0 <= pairs.length <= 10^5
- * 0 <= pairs[i][0], pairs[i][1] < s.length
- * s only contains lower case English letters.
+ * n == grid.length
+ * n == grid[i].length
+ * 1 <= n <= 100
+ * grid[i][j] is 0 or 1
