@@ -1,66 +1,50 @@
-<h2><a href="https://leetcode.com/problems/clone-graph/">null. Clone Graph</a></h2><h3>null</h3><hr>Can you solve this real interview question? Clone Graph - Given a reference of a node in a connected [https://en.wikipedia.org/wiki/Connectivity_(graph_theory)#Connected_graph] undirected graph.
+<h2><a href="https://leetcode.com/problems/all-paths-from-source-lead-to-destination/">null. All Paths from Source Lead to Destination</a></h2><h3>null</h3><hr>Can you solve this real interview question? All Paths from Source Lead to Destination - Given the edges of a directed graph where edges[i] = [ai, bi] indicates there is an edge between nodes ai and bi, and two nodes source and destination of this graph, determine whether or not all paths starting from source eventually, end at destination, that is:
 
-Return a deep copy [https://en.wikipedia.org/wiki/Object_copying#Deep_copy] (clone) of the graph.
+ * At least one path exists from the source node to the destination node
+ * If a path exists from the source node to a node with no outgoing edges, then that node is equal to destination.
+ * The number of possible paths from source to destination is a finite number.
 
-Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
-
-
-class Node {
-    public int val;
-    public List<Node> neighbors;
-}
-
-
- 
-
-Test case format:
-
-For simplicity, each node's value is the same as the node's index (1-indexed). For example, the first node with val == 1, the second node with val == 2, and so on. The graph is represented in the test case using an adjacency list.
-
-An adjacency list is a collection of unordered lists used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.
-
-The given node will always be the first node with val = 1. You must return the copy of the given node as a reference to the cloned graph.
+Return true if and only if all roads from source lead to destination.
 
  
 
 Example 1:
 
-[https://assets.leetcode.com/uploads/2019/11/04/133_clone_graph_question.png]
+[https://assets.leetcode.com/uploads/2019/03/16/485_example_1.png]
 
 
-Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
-Output: [[2,4],[1,3],[2,4],[1,3]]
-Explanation: There are 4 nodes in the graph.
-1st node (val = 1)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
-2nd node (val = 2)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
-3rd node (val = 3)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
-4th node (val = 4)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
+Input: n = 3, edges = [[0,1],[0,2]], source = 0, destination = 2
+Output: false
+Explanation: It is possible to reach and get stuck on both node 1 and node 2.
 
 
 Example 2:
 
-[https://assets.leetcode.com/uploads/2020/01/07/graph.png]
+[https://assets.leetcode.com/uploads/2019/03/16/485_example_2.png]
 
 
-Input: adjList = [[]]
-Output: [[]]
-Explanation: Note that the input contains one empty list. The graph consists of only one node with val = 1 and it does not have any neighbors.
+Input: n = 4, edges = [[0,1],[0,3],[1,2],[2,1]], source = 0, destination = 3
+Output: false
+Explanation: We have two possibilities: to end at node 3, or to loop over node 1 and node 2 indefinitely.
 
 
 Example 3:
 
+[https://assets.leetcode.com/uploads/2019/03/16/485_example_3.png]
 
-Input: adjList = []
-Output: []
-Explanation: This an empty graph, it does not have any nodes.
+
+Input: n = 4, edges = [[0,1],[0,2],[1,3],[2,3]], source = 0, destination = 3
+Output: true
 
 
  
 
 Constraints:
 
- * The number of nodes in the graph is in the range [0, 100].
- * 1 <= Node.val <= 100
- * Node.val is unique for each node.
- * There are no repeated edges and no self-loops in the graph.
- * The Graph is connected and all nodes can be visited starting from the given node.
+ * 1 <= n <= 104
+ * 0 <= edges.length <= 104
+ * edges.length == 2
+ * 0 <= ai, bi <= n - 1
+ * 0 <= source <= n - 1
+ * 0 <= destination <= n - 1
+ * The given graph may have self-loops and parallel edges.
