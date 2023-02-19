@@ -7,9 +7,9 @@ class Solution {
         return i;
     }
 public:
-    int countComponents(int n, const std::vector<std::vector<int>>& edges) noexcept {
-        std::vector<int> parent(n);
-        for (int i = 0; i < n; ++i) {
+    int countComponents(int numConnectedComponents, const std::vector<std::vector<int>>& edges) noexcept {
+        std::vector<int> parent(numConnectedComponents);
+        for (int i = 0; i < numConnectedComponents; ++i) {
             parent[i] = i;
         }
         for (const auto& edge : edges) {
@@ -17,9 +17,9 @@ public:
             int root_b = findRoot(parent, edge[1]);
             if (root_a != root_b) {
                 parent[root_a] = root_b;
-                --n;
+                --numConnectedComponents;
             }
         }
-        return n;
+        return numConnectedComponents;
     }
 };
