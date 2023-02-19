@@ -1,41 +1,36 @@
-/*
-// Definition for a Node.
-class Node {
-public:
-    int val;
-    vector<Node*> neighbors;
-    Node() {
-        val = 0;
-        neighbors = vector<Node*>();
-    }
-    Node(int _val) {
-        val = _val;
-        neighbors = vector<Node*>();
-    }
-    Node(int _val, vector<Node*> _neighbors) {
-        val = _val;
-        neighbors = _neighbors;
-    }
-};
-*/
-
 class Solution {
-    std::unordered_map<Node*, Node*> clonedNodes;
-public:
-    Node* cloneGraph(Node* node) {
-        if (node == nullptr) {
-            return node;
+private:
+ std::vector<std::unordered_set<int>> graph;
+ std::vector<bool> visited;
+    bool dfs(int source, int destination) noexcept {
+        if (visited[source]) {
+            return false;
         }
-
-        if (Node* neighbor = clonedNodes[node]; neighbor != nullptr) {
-            return neighbor;
+        if (graph[source].empty()) {
+            return source == destination;
         }
-
-        Node* newNode = new Node(node->val);
-        clonedNodes[node] = newNode;
-        std::transform(node->neighbors.cbegin(), node->neighbors.cend(), 
-            std::back_inserter(newNode->neighbors), 
-            [&](Node* neighbor) { return cloneGraph(neighbor); });
-        return newNode;
+        visited[source] = true;
+        for (const auto& next : graph[source]) {
+            if (!dfs(next, destination)) {
+                return false;
+            }
+        }
+        visited[source] = false;
+        return true;
+    }
+ public:
+    bool leadsToDestination(int n, std::vector<std::vector<int>>& edges, int source, int destination) {
+        if (edges.empty()) {
+            return source == destination;
+        }
+        graph.resize(n);
+        visited.resize(n, false);
+        for (const auto& edge : edges) {
+            graph[edge[0]].emplace(edge[1]);
+        }
+        if (std::count_if(graph.cbegin(), graph.cend(), [=](const auto& aSet) { return aSet.find(destination) != aSet.cend(); })+1 == n) {
+            return true;
+        }
+        return dfs(source, destination);
     }
 };
